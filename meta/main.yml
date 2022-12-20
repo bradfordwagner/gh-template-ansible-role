@@ -1,0 +1,11 @@
+galaxy_info:
+  role_name: azure_blob_cli
+  author: Bradford Wagner
+  description: installs azure blob cli (abc)
+  company: Blackrock Financial Management
+  license: Apache-2.0
+  min_ansible_version: 2.1
+  galaxy_tags: [azure, blob]
+
+dependencies:
+  - andrewrothstein.unarchive-deps
