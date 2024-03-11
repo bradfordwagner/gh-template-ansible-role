@@ -1,7 +1,7 @@
 name: ansible_role
 on: push
 jobs:
-  my-job:
+  ansible-role:
     runs-on: ubuntu-latest
     container:
       image: quay.io/bradfordwagner/ansible:3.6.2-debian_bookworm
@@ -21,4 +21,4 @@ jobs:
       - name: my-step
         run: echo "Hello World!"
       - name: my-step
-        run: task -t ./tasks/tasks/echo.yml echo msg='hi friends'
+        run: task -t ./tasks/tasks/ansible_role.yml
