@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: list files
         run: |
-          ls -lh
+          ls -lhR
           pwd
       - name: my-step
         run: task -t ./tasks/tasks/ansible_role.yml
