@@ -18,10 +18,5 @@ jobs:
         with:
           path: taskfiles
           repository: bradfordwagner/taskfiles
-      - name: list files
-        run: |
-          ls -lhRa
-          pwd
-          tree
-      - name: my-step
+      - name: Invoke Ansible Role Test
         run: task -t ./taskfiles/tasks/ansible_role.yml
