@@ -18,7 +18,9 @@ jobs:
         with:
           repository: bradfordwagner/taskfiles
           path: tasks
-      - name: my-step
-        run: echo "Hello World!"
+      - name: list files
+        run: |
+          ls -lh
+          pwd
       - name: my-step
         run: task -t ./tasks/tasks/ansible_role.yml
