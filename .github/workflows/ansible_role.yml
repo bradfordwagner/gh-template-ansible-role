@@ -18,6 +18,7 @@ jobs:
         with:
           repository: bradfordwagner/taskfiles
           path: tasks
+      - uses: actions/checkout@v4
       - name: list files
         run: |
           ls -lh
