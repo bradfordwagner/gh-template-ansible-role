@@ -6,6 +6,7 @@ jobs:
     container:
       image: quay.io/bradfordwagner/ansible:3.6.2-debian_bookworm
     steps:
+      - uses: actions/checkout@v4
       - name: Setup go-task
         uses: pnorton5432/setup-task@v1
         with:
@@ -17,7 +18,6 @@ jobs:
         with:
           path: taskfiles
           repository: bradfordwagner/taskfiles
-      - uses: actions/checkout@v4
       - name: list files
         run: |
           ls -lhRa
