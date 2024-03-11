@@ -6,22 +6,22 @@ jobs:
     container:
       image: quay.io/bradfordwagner/ansible:3.6.2-debian_bookworm
     steps:
-      # - name: my-step
-      #   run: echo "Hello World!"
       - name: Setup go-task
         uses: pnorton5432/setup-task@v1
         with:
           task-version: 3.35.1
       - name: task version
         run: task --version
-      - uses: actions/checkout@v4
+      - name: checkout taskfiles
+        uses: actions/checkout@v4
         with:
-          repository: bradfordwagner/taskfiles
           path: taskfiles
+          repository: bradfordwagner/taskfiles
       - uses: actions/checkout@v4
       - name: list files
         run: |
           ls -lhRa
           pwd
+          tree
       - name: my-step
         run: task -t ./taskfiles/tasks/ansible_role.yml
