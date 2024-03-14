@@ -7,7 +7,7 @@ jobs:
         os:
           - alpine_3.16
           - alpine_3.17
-          - archnux_latest
+          - archlinux_latest
           - debian_bookworm
           - debian_bullseye
           - ubuntu_focal
