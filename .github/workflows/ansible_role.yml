@@ -5,8 +5,8 @@ jobs:
     strategy:
       matrix:
         os:
-          - alpine-3.16
-          - alpine-3.17
+          - alpine_3.16
+          - alpine_3.17
           - archnux_latest
           - debian_bookworm
           - debian_bullseye
