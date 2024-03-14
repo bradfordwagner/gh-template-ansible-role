@@ -8,4 +8,4 @@ galaxy_info:
   galaxy_tags: [azure, blob]
 
 dependencies:
-  - andrewrothstein.unarchive-deps
+  - andrewrothstein.unarchivedeps
