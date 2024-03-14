@@ -13,10 +13,10 @@ jobs:
           - ubuntu_focal
           - ubuntu_kinetic
           - ubuntu_lunar
-        tags: [3.6.2]
+        tag: [3.6.2]
     runs-on: ubuntu-latest
     container:
-      image: quay.io/bradfordwagner/ansible:{{ matrix.tag }}-{{ matrix.os }}
+      image: quay.io/bradfordwagner/ansible:${{ matrix.tag }}-${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - name: Setup go-task
