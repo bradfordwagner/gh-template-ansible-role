@@ -24,11 +24,12 @@ jobs:
         run: echo "config=$(yq -oj '.' config.yaml | jq -cr)" >> $GITHUB_OUTPUT
   ansible-role:
     name: ${{ matrix.build.repo }}_${{ matrix.build.tag }}
+    needs: config-yaml
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         build: ${{ fromJSON(needs.config-yaml.outputs.config).builds }}
-    runs-on: ubuntu-latest
     container:
       # image: quay.io/bradfordwagner/ansible:${{ matrix.tag }}-${{ matrix.os }}
       image: ${{ fromJSON(needs.config-yaml.outputs.config).upstream.repo }}:${{ fromJSON(needs.config-yaml.outputs.config).upstream.tag }}-${{ matrix.build.os }}
