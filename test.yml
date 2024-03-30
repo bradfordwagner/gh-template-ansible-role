@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: localhost
   roles:
     - role: '{{ playbook_dir }}'
       abc_ver: 1.0.1
