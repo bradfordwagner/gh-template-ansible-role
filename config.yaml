@@ -2,7 +2,7 @@
 target_repo: ghcr.io/bradfordwagner/test
 upstream:
   repo: ghcr.io/bradfordwagner/ansible
-  tag: 5.1.1
+  tag: 5.1.2-beta1
 builds:
   - { os: alpine_3.18      , platforms: [linux/amd64      , linux/arm64]        , pkg_installer: alpine }
   - { os: alpine_3.19      , platforms: [linux/amd64      , linux/arm64]        , pkg_installer: alpine }
