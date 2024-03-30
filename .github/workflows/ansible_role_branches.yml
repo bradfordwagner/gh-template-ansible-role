@@ -45,5 +45,7 @@ jobs:
         with:
           path: taskfiles
           repository: bradfordwagner/taskfiles
-      - name: task=branches
-        run: task -t ./taskfiles/tasks/ansible_role.yml
+      # - name: task=branches
+      #   run: task -t ./taskfiles/tasks/ansible_role.yml
+      - name: manual test
+        run: ls -lh ${HOME}/myenv/bin
