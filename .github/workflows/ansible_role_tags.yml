@@ -65,6 +65,10 @@ jobs:
         with:
           path: taskfiles
           repository: bradfordwagner/taskfiles
+      - uses: chrisdickinson/setup-yq@v1.0.1
+        name: yq=v4.43.1
+        with:
+          yq-version: v4.43.1
       - name: fix=git://safedir
         run: git config --system --add safe.directory '*'
       - name: task=branches
