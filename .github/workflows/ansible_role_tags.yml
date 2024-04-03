@@ -1,4 +1,4 @@
-name: ansible_role
+name: ansible_role_tags
 on:
   push:
     tags:
