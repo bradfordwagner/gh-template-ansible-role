@@ -48,15 +48,11 @@ jobs:
       - name: task=branches
         run: task -t ./taskfiles/tasks/ansible_role.yml
   ansible-role-tags-publish:
-    name: ${{ matrix.build.os }}
+    name: publish
     needs: [config-yaml, ansible-role-tags]
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        build: ${{ fromJSON(needs.config-yaml.outputs.config).builds[0] }}
     container:
-      image: ${{ fromJSON(needs.config-yaml.outputs.config).upstream.repo }}:${{ fromJSON(needs.config-yaml.outputs.config).upstream.tag }}-${{ matrix.build.os }}
+      image: ${{ fromJSON(needs.config-yaml.outputs.config).upstream.repo }}:${{ fromJSON(needs.config-yaml.outputs.config).upstream.tag }}-${{ fromJSON(needs.config-yaml.outputs.config).upstream.publish_os }}
     steps:
       - name: checkout=self
         uses: actions/checkout@v4
