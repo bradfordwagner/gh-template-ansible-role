@@ -65,6 +65,8 @@ jobs:
         with:
           path: taskfiles
           repository: bradfordwagner/taskfiles
+      - name: fix=git://safedir
+        run: git config --system --add safe.directory '*'
       - name: task=branches
         run: task -t ./taskfiles/tasks/ansible_role.yml publish_role_to_galaxy \
           token=${{ secrets.GALAXY_TOKEN }}
