@@ -1,7 +1,8 @@
 name: ansible_role
 on:
-  - push
-  - workflow_dispatch
+  push:
+    tags:
+      - '*'
 jobs:
   config-yaml:
     name: config.yaml
@@ -22,7 +23,7 @@ jobs:
       - name: export=config
         id: config
         run: echo "config=$(yq -oj '.' config.yaml | jq -cr)" >> $GITHUB_OUTPUT
-  ansible-role-branches:
+  ansible-role-tags:
     name: ${{ matrix.build.os }}
     needs: config-yaml
     runs-on: ubuntu-latest
@@ -46,3 +47,28 @@ jobs:
           repository: bradfordwagner/taskfiles
       - name: task=branches
         run: task -t ./taskfiles/tasks/ansible_role.yml
+  ansible-role-tags-publish:
+    name: ${{ matrix.build.os }}
+    needs: [config-yaml, ansible-role-tags]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        build: ${{ fromJSON(needs.config-yaml.outputs.config).builds[0] }}
+    container:
+      image: ${{ fromJSON(needs.config-yaml.outputs.config).upstream.repo }}:${{ fromJSON(needs.config-yaml.outputs.config).upstream.tag }}-${{ matrix.build.os }}
+    steps:
+      - name: checkout=self
+        uses: actions/checkout@v4
+      - name: task=3.35.1
+        uses: pnorton5432/setup-task@v1
+        with:
+          task-version: 3.35.1
+      - name: checkout=taskfiles
+        uses: actions/checkout@v4
+        with:
+          path: taskfiles
+          repository: bradfordwagner/taskfiles
+      - name: task=branches
+        run: task -t ./taskfiles/tasks/ansible_role.yml publish_role_to_galaxy \
+          token=${{ secrets.GALAXY_TOKEN }}
