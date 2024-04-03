@@ -14,7 +14,6 @@ jobs:
         uses: robertdebock/galaxy-action@1.2.0
         with:
           galaxy_api_key: ${{ secrets.GALAXY_TOKEN }}
-      - use:
       # - uses: chrisdickinson/setup-yq@v1.0.1
       #   name: yq=v4.43.1
       #   with:
