@@ -6,7 +6,7 @@ on:
 jobs:
   config-yaml:
     name: config.yaml
-    runs-on: ubuntu-latest
+    runs-on: arm64
     outputs:
       config: ${{ steps.config.outputs.config }}
     steps:
@@ -16,17 +16,21 @@ jobs:
         name: yq=v4.43.1
         with:
           yq-version: v4.43.1
+      - name: yq=version
+        run: yq --version
+      
       - name: jq=1.7
         uses: dcarbone/install-jq-action@v2
         with:
           version: 1.7
+      
       - name: export=config
         id: config
         run: echo "config=$(yq -oj '.' config.yaml | jq -cr)" >> $GITHUB_OUTPUT
   ansible-role-tags:
     name: ${{ matrix.build.os }}
     needs: config-yaml
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.build.runs_on }}
     strategy:
       fail-fast: false
       matrix:
@@ -36,15 +40,18 @@ jobs:
     steps:
       - name: checkout=self
         uses: actions/checkout@v4
-      - name: task=3.35.1
-        uses: pnorton5432/setup-task@v1
-        with:
-          task-version: 3.35.1
-      - name: checkout=taskfiles
+      - name: task=latest
+        run: |
+          sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d
+          export PATH=$(pwd)/bin:$PATH
+      - name: task=version
+        run: ./bin/task --version
+      - name: checkout=taskfiles@feature/arm
         uses: actions/checkout@v4
         with:
           path: taskfiles
           repository: bradfordwagner/taskfiles
+          ref: feature/arm
       - name: task=branches
         run: task -t ./taskfiles/tasks/ansible_role.yml
   ansible-role-tags-publish:
