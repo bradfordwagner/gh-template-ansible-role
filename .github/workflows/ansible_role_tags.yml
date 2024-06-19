@@ -28,7 +28,7 @@ jobs:
         id: config
         run: echo "config=$(yq -oj '.' config.yaml | jq -cr)" >> $GITHUB_OUTPUT
   ansible-role-tags:
-    name: ${{ matrix.build.os }}
+    name: ${{ matrix.build.os }}-${{ matrix.build.arch }}
     needs: config-yaml
     runs-on: ${{ matrix.build.runs_on }}
     strategy:
