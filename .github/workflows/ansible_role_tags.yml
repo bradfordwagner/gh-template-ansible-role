@@ -3,66 +3,54 @@ on:
   push:
     tags:
       - '*'
+env:
+  version: ${{ github.ref_name }}
 jobs:
   config-yaml:
     name: config.yaml
     runs-on: arm64
     outputs:
-      config: ${{ steps.config.outputs.config }}
+      product: ${{ steps.config.outputs.product }}
     steps:
       - uses: actions/checkout@v4
-      # https://github.com/chrisdickinson/setup-yq/blob/latest/action.yml
-      - uses: chrisdickinson/setup-yq@v1.0.1
-        name: yq=v4.43.1
-        with:
-          yq-version: v4.43.1
-      - name: yq=version
-        run: yq --version
+      - name: dagger=0.11.8
+        run: |
+          curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.11.8 sh
       
-      - name: jq=1.7
-        uses: dcarbone/install-jq-action@v2
-        with:
-          version: 1.7
-      
-      - name: export=config
+      - name: dagger=product
         id: config
-        run: echo "config=$(yq -oj '.' config.yaml | jq -cr)" >> $GITHUB_OUTPUT
-  ansible-role-tags:
-    name: ${{ matrix.build.os }}-${{ matrix.build.arch }}
+        run: |
+          echo product=$(./bin/dagger -m github.com/bradfordwagner/dagger-modules/ansible@feature/ansible call product-json --src=. --version=${version}) >> $GITHUB_OUTPUT
+  builds:
+    runs-on: ${{ matrix.product.runner }}
+    permissions: write-all
     needs: config-yaml
-    runs-on: ${{ matrix.build.runs_on }}
+    name: ${{ matrix.product.index }}:${{ matrix.product.os }} (${{ matrix.product.arch }})
     strategy:
       fail-fast: false
       matrix:
-        build: ${{ fromJSON(needs.config-yaml.outputs.config).builds }}
-    container:
-      image: ${{ fromJSON(needs.config-yaml.outputs.config).upstream.repo }}:${{ fromJSON(needs.config-yaml.outputs.config).upstream.tag }}-${{ matrix.build.os }}
+        product: ${{ fromJSON(needs.config-yaml.outputs.product) }}
     steps:
-      - name: checkout=self
-        uses: actions/checkout@v4
-      - name: task=latest
+      - uses: actions/checkout@v4
+      - name: dagger=0.11.8
         run: |
-          sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d
-          export PATH=$(pwd)/bin:$PATH
-      - name: task=version
-        run: ./bin/task --version
-      - name: checkout=taskfiles@feature/arm
-        uses: actions/checkout@v4
+          curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.11.8 sh
+      
+      # work around other runner's logging out removing credentials
+      # https://github.com/docker/login-action/issues/173#issuecomment-1079688020
+      - name: Set DOCKER_CONFIG
+        run: |
+          id=docker_configs/$(uuidgen)
+          mkdir -p $HOME/${id}/.docker
+          echo "DOCKER_CONFIG=$HOME/${id}/.docker" >> $GITHUB_ENV
+      - uses: docker/login-action@v3
+        name: login=ghcr.io
         with:
-          path: taskfiles
-          repository: bradfordwagner/taskfiles
-          ref: feature/arm
-      - name: task=branches
-        run: ./bin/task -t ./taskfiles/tasks/ansible_role.yml
-  ansible-role-tags-publish:
-    name: publish
-    needs: [config-yaml, ansible-role-tags]
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout=self
-        uses: actions/checkout@v4
-      - name: galaxy_publish
-        uses: robertdebock/galaxy-action@1.2.0
-        with:
-          galaxy_api_key: ${{ secrets.GALAXY_TOKEN }}
-          git_branch: ${{ github.ref_name }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+          logout: false
+      - name: dagger=build
+        id: config
+        run: |
+          echo hi
