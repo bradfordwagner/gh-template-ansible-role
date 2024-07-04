@@ -51,7 +51,6 @@ jobs:
           password: ${{ github.token }}
           logout: false
       - name: dagger=build
-        id: config
         run: |
           ./bin/dagger -m github.com/bradfordwagner/dagger-modules/ansible@feature/ansible call build \
             --src=. \
