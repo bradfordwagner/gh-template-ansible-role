@@ -56,4 +56,5 @@ jobs:
             --src=. \
             --index=${{ matrix.product.index }} \
             --version=${version} \
-            --isDev=false
+            --isDev=false \
+            --flavor=role
