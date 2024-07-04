@@ -52,4 +52,8 @@ jobs:
       - name: dagger=build
         id: config
         run: |
-          echo hi
+          ./bin/dagger -m github.com/bradfordwagner/dagger-modules/ansible@feature/ansible call build \
+            --src=. \
+            --index=${{ matrix.product.index }} \
+            --version=${version} \
+            --isDev=false
