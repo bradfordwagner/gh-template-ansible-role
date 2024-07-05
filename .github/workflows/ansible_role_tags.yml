@@ -16,12 +16,12 @@ jobs:
       - name: dagger=0.11.8
         run: |
           curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.11.8 sh
-      
       - name: dagger=product
         id: config
         run: |
-          echo product=$(./bin/dagger -m  call product-json --src=. --version=${{ env.version }}) >> $GITHUB_OUTPUT
-  
+          # write your own scoped version of the following since  is not available at this base level
+          # echo product=$(./bin/dagger -m  call product-json --src=. --version=${{ env.version }}) >> $GITHUB_OUTPUT
+          echo product=$(./bin/dagger -m github.com/bradfordwagner/dagger-modules/ansible@feature/ansible call product-json --src=. --version=${version}) >> $GITHUB_OUTPUT
   builds:
     runs-on: ${{ matrix.product.runner }}
     permissions: write-all
@@ -36,7 +36,6 @@ jobs:
       - name: dagger=0.11.8
         run: |
           curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.11.8 sh
-      
       # work around other runner's logging out removing credentials
       # https://github.com/docker/login-action/issues/173#issuecomment-1079688020
       - name: Set DOCKER_CONFIG
@@ -50,8 +49,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ github.token }}
-          logout: false
-      - name: dagger=build
+          logout: false- name: dagger=build
         run: |
           ./bin/dagger -m github.com/bradfordwagner/dagger-modules/ansible@feature/ansible call build \
             --src=. \
