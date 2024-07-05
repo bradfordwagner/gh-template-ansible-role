@@ -5,8 +5,8 @@ on:
 env:
   version: latest
 jobs:
-  config-yaml:
-    name: config.yaml
+  product:
+    name: product
     runs-on: arm64
     outputs:
       product: ${{ steps.config.outputs.product }}
@@ -17,18 +17,18 @@ jobs:
           curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.11.8 sh
       
       - name: dagger=product
-        id: config
         run: |
-          echo product=$(./bin/dagger -m github.com/bradfordwagner/dagger-modules/ansible@feature/ansible call product-json --src=. --version=${version}) >> $GITHUB_OUTPUT
+          echo product=$(./bin/dagger -m  call product-json --src=. --version=${version}) >> $GITHUB_OUTPUT
+  
   builds:
     runs-on: ${{ matrix.product.runner }}
     permissions: write-all
-    needs: config-yaml
+    needs: product
     name: ${{ matrix.product.index }}:${{ matrix.product.os }} (${{ matrix.product.arch }})
     strategy:
       fail-fast: false
       matrix:
-        product: ${{ fromJSON(needs.config-yaml.outputs.product) }}
+        product: ${{ fromJSON(needs.product.outputs.product) }}
     steps:
       - uses: actions/checkout@v4
       - name: dagger=0.11.8
