@@ -19,7 +19,7 @@ jobs:
       
       - name: dagger=product
         run: |
-          echo product=$(./bin/dagger -m  call product-json --src=. --version=${version}) >> $GITHUB_OUTPUT
+          echo product=$(./bin/dagger -m  call product-json --src=. --version=${{ env.version }} >> $GITHUB_OUTPUT
   
   builds:
     runs-on: ${{ matrix.product.runner }}
