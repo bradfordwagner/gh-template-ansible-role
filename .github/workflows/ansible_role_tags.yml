@@ -49,7 +49,8 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ github.token }}
-          logout: false- name: dagger=build
+          logout: false
+      - name: dagger=build
         run: |
           ./bin/dagger -m github.com/bradfordwagner/dagger-modules/ansible@feature/ansible call build \
             --src=. \
