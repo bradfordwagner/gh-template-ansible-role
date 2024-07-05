@@ -17,6 +17,7 @@ jobs:
           curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.11.8 sh
       
       - name: dagger=product
+        id: config
         run: |
           echo product=$(./bin/dagger -m  call product-json --src=. --version=${{ env.version }}) >> $GITHUB_OUTPUT
   
