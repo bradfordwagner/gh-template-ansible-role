@@ -60,7 +60,7 @@ jobs:
             --flavor=role
   ansible-role-tags-publish:
     name: publish
-    needs: [product, builds]
+    needs: builds
     runs-on: ubuntu-latest
     steps:
       - name: checkout=self
