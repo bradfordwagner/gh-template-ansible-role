@@ -45,5 +45,4 @@ builds:
         - linux/arm64
 upstream:
     repo: ghcr.io/bradfordwagner/ansible
-    tag: 5.9.5
-#    tag: 5.9.4
+    tag: 5.9.4
