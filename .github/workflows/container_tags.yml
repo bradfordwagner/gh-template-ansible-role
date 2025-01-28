@@ -19,9 +19,9 @@ jobs:
       - name: dagger=product
         id: config
         run: |
-          # write your own scoped version of the following since https://github.com/bradfordwagner/dagger-container-builds@feature/ansible is not available at this base level
+          # write your own scoped version of the following since https://github.com/bradfordwagner/dagger-container-builds@0.2.0 is not available at this base level
           set -x
-          echo product=$(./bin/dagger -m https://github.com/bradfordwagner/dagger-container-builds@feature/ansible call product-json --src=. --version=${{ env.version }}) >> $GITHUB_OUTPUT
+          echo product=$(./bin/dagger -m https://github.com/bradfordwagner/dagger-container-builds@0.2.0 call product-json --src=. --version=${{ env.version }}) >> $GITHUB_OUTPUT
   builds:
     runs-on: ${{ matrix.product.runner }}
     permissions: write-all
@@ -54,7 +54,7 @@ jobs:
       - name: dagger=build
         id: config
         run: |
-          ./bin/dagger -m https://github.com/bradfordwagner/dagger-container-builds@feature/ansible call build \
+          ./bin/dagger -m https://github.com/bradfordwagner/dagger-container-builds@0.2.0 call build \
             --progress=plain \
             --src=. \
             --index=${{ matrix.product.index }} \
