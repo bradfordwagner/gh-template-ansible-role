@@ -7,6 +7,15 @@
 # vault_version is pinned explicitly to match defaults/main.yml's current
 # default (2.0.3) - bump both together, see CLAUDE.md Upgrades.
 
+# the CI base images ship an apt index frozen at image build time; once debian
+# rotates a package version out of the mirror, installs 404. refresh it first.
+- name: refresh package cache
+  hosts: localhost
+  tasks:
+    - ansible.builtin.apt:
+        update_cache: true
+      when: ansible_facts['os_family'] == 'Debian'
+
 - name: vault community / system scope (role defaults, no overrides)
   hosts: localhost
   roles:
