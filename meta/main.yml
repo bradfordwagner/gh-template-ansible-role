@@ -1,5 +1,5 @@
 galaxy_info:
-  role_name: vault
+  role_name: gh_template_ansible_role
   author: Bradford Wagner
   description: installs HashiCorp Vault (community or enterprise)
   company: Blackrock Financial Management
