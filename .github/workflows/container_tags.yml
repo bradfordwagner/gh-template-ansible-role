@@ -12,7 +12,7 @@ jobs:
     outputs:
       product: ${{ steps.config.outputs.product }}
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: dagger=0.21.11
         run: |
           curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.21.11 sh
@@ -32,7 +32,7 @@ jobs:
       matrix:
         product: ${{ fromJSON(needs.product.outputs.product) }}
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: dagger=0.21.11
         run: |
           curl -L https://dl.dagger.io/dagger/install.sh | DAGGER_VERSION=0.21.11 sh
@@ -67,7 +67,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout=self
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: galaxy_publish
         uses: robertdebock/galaxy-action@2da9916b23b62d328af9c8814ad5973d68817a7e # 1.2.0
         with:
