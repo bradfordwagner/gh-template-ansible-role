@@ -1,7 +1,42 @@
 target_repo: ghcr.io/bradfordwagner/gh-template-ansible-role
 flavor: ansible_role
 builds:
+    - os: alpine_3.22
+      archs:
+        - linux/amd64
+        - linux/arm64
+    - os: alpine_3.23
+      archs:
+        - linux/amd64
+        - linux/arm64
     - os: alpine_3.24
+      archs:
+        - linux/amd64
+        - linux/arm64
+    - os: archlinux_latest
+      archs:
+        - linux/amd64
+    - os: debian_trixie
+      archs:
+        - linux/amd64
+        - linux/arm64
+    - os: debian_trixie-slim
+      archs:
+        - linux/amd64
+        - linux/arm64
+    - os: debian_forky
+      archs:
+        - linux/amd64
+        - linux/arm64
+    - os: debian_forky-slim
+      archs:
+        - linux/amd64
+        - linux/arm64
+    - os: ubuntu_noble
+      archs:
+        - linux/amd64
+        - linux/arm64
+    - os: ubuntu_resolute
       archs:
         - linux/amd64
         - linux/arm64
